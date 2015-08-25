@@ -4,6 +4,8 @@ from PySide.QtGui import *
 
 import PIL.ImageFile
 
+import IO.cinema_store
+
 from QRenderView import *
 from RenderViewMouseInteractor import *
 
@@ -13,6 +15,7 @@ class MainWindow(QMainWindow):
 
         # Set title
         self.setWindowTitle('Cinema Desktop')
+        self.setGeometry(300, 300, 600, 400)
 
         # Set up UI
         self._mainWidget = QSplitter(Qt.Horizontal, self)
@@ -22,6 +25,7 @@ class MainWindow(QMainWindow):
         self._displayWidget.setRenderHints(QPainter.SmoothPixmapTransform)
         self._displayWidget.setAlignment(Qt.AlignCenter)
         self._displayWidget.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self._displayWidget.resize(300,300)
         self._parametersWidget = QWidget(self)
         self._parametersWidget.setMinimumSize(QSize(200, 100))
         self._parametersWidget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.MinimumExpanding)
@@ -41,8 +45,25 @@ class MainWindow(QMainWindow):
         # File menu
         self._exitAction = QAction('E&xit', self, statusTip='Exit the application',
                                    triggered=self.close)
-        self._fileToolBar = self.menuBar().addMenu('&File')
+        self._fileToolBar = self.menuBar().addMenu('&File');
         self._fileToolBar.addAction(self._exitAction)
+
+        openFileAction = QAction(QIcon('open.png'), 'Open', self)
+        openFileAction.setShortcut('Ctrl+O')
+        openFileAction.setStatusTip('Open an info.json File')
+        openFileAction.triggered.connect(self.showDialog)
+        self._fileToolBar.addAction(openFileAction)
+
+    # File dialog
+    def showDialog(self):
+
+        fname, _ = QFileDialog.getOpenFileName(self, 'Open an info.json File',
+                    '~', 'JSON Input Files (info.json)')
+        
+        cs = IO.cinema_store.FileStore(fname)
+        cs.load()
+        self.setStore(cs)
+        self.show()
 
     # Set the store currently being displayed
     def setStore(self, store):
