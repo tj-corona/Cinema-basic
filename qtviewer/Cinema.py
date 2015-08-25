@@ -8,10 +8,16 @@ from PySide.QtGui import *
 from PySide.QtUiTools import *
 from PySide import QtXml
 
+# import json
+import json as simplejson
+
 # import Python Image Library
 import PIL.ImageFile
 
 # Import cinema IO
+sys.path.insert(0, "C:\\Users\\tj.corona\\Desktop\\Cinema-basic\\")
+sys.path
+
 import IO.cinema_store
 
 # Show it in Qt

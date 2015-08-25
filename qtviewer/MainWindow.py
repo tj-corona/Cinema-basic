@@ -354,9 +354,16 @@ class MainWindow(QMainWindow):
     # Given a document, read the data into an image that can be displayed in Qt
     def displayDocument(self, doc):
         #load it into PIL
-        imageparser = PIL.ImageFile.Parser()
-        imageparser.feed(doc.data)
-        pimg = imageparser.close()
+    #    imageparser = PIL.ImageFile.Parser()
+    #    imageparser.feed(doc.data)
+    #    pimg = imageparser.close()
+
+        # for some reason, PIL on Windows fails to parse the files. The code
+        # below is a temporary kludge to construct a working binary (see also
+        # cinema_store.py, line 291)
+        from PIL import Image
+        pimg =  Image.open(doc.attributes)
+
         imageString = pimg.convert('RGBA').tostring('raw', 'BGRA')
         qimg = QImage(imageString, pimg.size[0], pimg.size[1], QImage.Format_ARGB32)
         pix = QPixmap.fromImage(qimg)

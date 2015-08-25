@@ -287,7 +287,13 @@ class FileStore(Store):
         vals = re.match(self.__fn_vals_RE, doc_file).groups()[1:]
         descriptor = dict(zip(self.__fn_keys, vals))
         doc = Document(descriptor, data)
-        doc.attributes = None
+
+        # Using the doc attributes to relay the document file name is part
+        # of a kludge to get around PIL on windows having trouble with image
+        # files (see MainWindow.py, line 361)
+    #    doc.attributes = None
+        doc.attributes = doc_file
+
         return doc
 
 

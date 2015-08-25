@@ -17,5 +17,5 @@ OPTIONS = {
 
 setup(
     app=["Cinema.py"],
-    setup_requires=["py2app"],
+    setup_requires=["py2exe"],
 )
