@@ -15,9 +15,6 @@ import json as simplejson
 import PIL.ImageFile
 
 # Import cinema IO
-sys.path.insert(0, "C:\\Users\\tj.corona\\Desktop\\Cinema-basic\\")
-sys.path
-
 import IO.cinema_store
 
 # Show it in Qt
